@@ -17,11 +17,9 @@ class MainActivity : AppCompatActivity() {
       super.onCreate(savedInstanceState)
       setContentView(R.layout.main_activity)
       val toolbar = findViewById<Toolbar>(R.id.toolbar)
-      val text = findViewById<TextView>(R.id.textView)
       setSupportActionBar(toolbar)
       val button = findViewById<Button>(R.id.button)
       button.setOnClickListener {
-          text.visibility= View.GONE
           supportFragmentManager.beginTransaction().apply {
               replace(R.id.fragment_container, Fragment_1())
               commit()
