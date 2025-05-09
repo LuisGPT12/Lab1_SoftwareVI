@@ -12,19 +12,33 @@ import androidx.appcompat.widget.Toolbar
  * Aaron Santamaria, Cédula: 3-742-1763
  **/
 
-class MainActivity : AppCompatActivity() {
-  override fun onCreate(savedInstanceState: Bundle?) {
-      super.onCreate(savedInstanceState)
-      setContentView(R.layout.main_activity)
-      val toolbar = findViewById<Toolbar>(R.id.toolbar)
-      setSupportActionBar(toolbar)
-      val button = findViewById<Button>(R.id.button)
-      button.setOnClickListener {
-          supportFragmentManager.beginTransaction().apply {
-              replace(R.id.fragment_container, Fragment_1())
-              commit()
-          }
-      }
-  }
+class MainActivity : AppCompatActivity(), DadoAnimListener {
+    private lateinit var button: Button
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.main_activity)
+
+        val toolbar = findViewById<Toolbar>(R.id.toolbar)
+        setSupportActionBar(toolbar)
+
+        button = findViewById(R.id.button)
+
+        button.setOnClickListener {
+            supportFragmentManager.beginTransaction().apply {
+                replace(R.id.fragment_container, Fragment_1())
+                commit()
+            }
+        }
+    }
+
+    override fun onActivar() {
+        button.isEnabled = false
+    }
+
+    override fun onDesactivar() {
+        button.isEnabled = true
+    }
 }
+
 
