@@ -1,4 +1,5 @@
 package com.example.lab1_softwarevi
+
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.os.Bundle
@@ -18,15 +19,18 @@ import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 
 interface DadoAnimListener {
-    fun onDesactivar()
     fun onActivar()
 }
 
 class Fragment_1 : Fragment() {
+    var audioNum : Int = 0
     private lateinit var dadoGif: ImageView
-    private lateinit var textResul: TextView
+    private lateinit var imageResul: ImageView
     private var listener: DadoAnimListener? = null
 
+    fun hiddenNum() {
+        imageResul.visibility = View.GONE
+    }
     override fun onAttach(context: Context) {
         super.onAttach(context)
         if (context is DadoAnimListener) {
@@ -38,16 +42,15 @@ class Fragment_1 : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_1, container, false)
         dadoGif = view.findViewById(R.id.gifImageView)
-        textResul = view.findViewById(R.id.daResult)
-        mostrarGif()
+        imageResul = view.findViewById(R.id.daImagen)
         return view
     }
 
-    private fun mostrarGif() {
-        listener?.onActivar()
+    fun mostrarGif() {
         val randomNum = (1..6).random()
+        this.audioNum = randomNum
         val gifId = resources.getIdentifier("dado$randomNum", "drawable", requireContext().packageName)
-
+        val numId = resources.getIdentifier("num$randomNum", "drawable", requireContext().packageName)
         Glide.with(this)
             .asGif()
             .load(gifId)
@@ -57,18 +60,15 @@ class Fragment_1 : Fragment() {
                     dadoGif.setImageDrawable(resource)
                     resource.start()
                     dadoGif.postDelayed({
-                        textResul.text = randomNum.toString()
-                        listener?.onDesactivar()
+                        imageResul.setImageResource(numId)
+                        imageResul.visibility = View.VISIBLE
                     }, 2000)
                 }
 
                 override fun onLoadCleared(placeholder: Drawable?) {
-
                 }
             })
-    }
-}
-
+    }}
 
 
 
