@@ -9,6 +9,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
+import java.util.concurrent.TimeUnit
+import android.graphics.Color
 import nl.dionsegijn.konfetti.xml.KonfettiView
 import nl.dionsegijn.konfetti.core.Party
 import nl.dionsegijn.konfetti.core.Position
@@ -56,17 +58,44 @@ class Fragment_1 : Fragment() {
                     resource.setLoopCount(1)
                     dadoGif.setImageDrawable(resource)
                     resource.start()
+
                     dadoGif.postDelayed({
                         textResul.text = randomNum.toString()
+
+                        // Parpadeo del fondo
+                        val color = if (randomNum == 6) Color.parseColor("#FFD700") else Color.GRAY
+                        (activity as? MainActivity)?.parpadearFondo(color)
+
+                        // Konfetti solo si se gana
+                        if (randomNum == 6) {
+                            val konfettiView = view?.findViewById<KonfettiView>(R.id.konfettiView)
+                            konfettiView?.visibility = View.VISIBLE
+                            konfettiView?.start(
+                                Party(
+                                    emitter = Emitter(duration = 100, TimeUnit.MILLISECONDS).max(50),
+                                    speed = 5f,
+                                    maxSpeed = 7f,
+                                    damping = 0.9f,
+                                    spread = 400,
+                                    colors = listOf(0xfce18a, 0xff726d, 0xf4306d, 0xb48def),
+                                    position = Position.Relative(0.5, 0.0),
+                                )
+                            )
+
+                            // Ocultar konfetti luego de 3 segundos
+                            konfettiView?.postDelayed({
+                                konfettiView.visibility = View.GONE
+                            }, 3000)
+                        }
+
                         listener?.onDesactivar()
                     }, 2000)
                 }
 
-                override fun onLoadCleared(placeholder: Drawable?) {
-
-                }
+                override fun onLoadCleared(placeholder: Drawable?) {}
             })
     }
+
 }
 
 

@@ -29,7 +29,8 @@ androidx-material3 = { group = "androidx.compose.material3", name = "material3" 
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 material = { group = "com.google.android.material", name = "material", version = "1.12.0" }
-konfetti = { group = "nl.dionsegijn", name = "konfetti-xml", version = "2.0.2" }
+konfetti = { group = "nl.dionsegijn", name = "konfetti-xml", version = "2.0.5" }
+konfetti-core = { module = "nl.dionsegijn:konfetti-core", version = "2.0.5" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

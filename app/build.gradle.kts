@@ -47,6 +47,7 @@ dependencies {
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
     implementation(libs.material)
+    implementation(libs.konfetti.core)
     implementation(libs.konfetti)
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.ui)
