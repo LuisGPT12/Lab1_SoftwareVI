@@ -90,20 +90,26 @@ class Fragment_1 : Fragment() {
 
     private fun lanzarKonfetti() {
         konfettiView.visibility = View.VISIBLE
-        konfettiView.start(
-            Party(
-                emitter = Emitter(duration = 100, TimeUnit.MILLISECONDS).max(50),
-                speed = 5f,
-                maxSpeed = 7f,
-                damping = 0.9f,
-                spread = 360,
-                colors = listOf(0xfce18a, 0xff726d, 0xf4306d, 0xb48def),
-                position = Position.Relative(0.5, 0.0),
+
+        val positions = listOf(0.1, 0.3, 0.5, 0.7, 0.9)
+
+        positions.forEach { x ->
+            konfettiView.start(
+                Party(
+                    emitter = Emitter(duration = 100, TimeUnit.MILLISECONDS).max(50),
+                    speed = 5f,
+                    maxSpeed = 7f,
+                    damping = 0.9f,
+                    spread = 360,
+                    colors = listOf(0xfce18a, 0xff726d, 0xf4306d, 0xb48def),
+                    position = Position.Relative(x, 0.0),
+                )
             )
-        )
+        }
 
         konfettiView.postDelayed({
             konfettiView.visibility = View.GONE
         }, 3000)
     }
+
 }
