@@ -31,6 +31,7 @@ class Fragment_1 : Fragment() {
     private lateinit var imageResul: ImageView
     private lateinit var konfettiView: KonfettiView
     private var listener: DadoAnimListener? = null
+    private lateinit var imageresoult: ImageView
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -45,6 +46,7 @@ class Fragment_1 : Fragment() {
         dadoGif = view.findViewById(R.id.gifImageView)
         imageResul = view.findViewById(R.id.imageResul)
         konfettiView = view.findViewById(R.id.konfettiView)
+        imageresoult= view.findViewById(R.id.imageView2)
 
         mostrarGif()
         return view
@@ -79,6 +81,7 @@ class Fragment_1 : Fragment() {
                         val color = if (randomNum == 6) Color.parseColor("#FFD700") else Color.parseColor("#4C4F56")
                         listener?.parpadearFondo(color)
                         listener?.reproducirSonido(randomNum)
+                        cambiarImgResoult(randomNum)
 
                         if (randomNum == 6) {
                             lanzarKonfetti()
@@ -111,5 +114,8 @@ class Fragment_1 : Fragment() {
             konfettiView.visibility = View.GONE
         }, 3000)
     }
-
+    private fun cambiarImgResoult(res: Int){
+        imageresoult.visibility=View.VISIBLE
+        if(res==6)imageresoult.setImageResource(R.drawable.victoria) else imageresoult.setImageResource(R.drawable.derrota)
+    }
 }

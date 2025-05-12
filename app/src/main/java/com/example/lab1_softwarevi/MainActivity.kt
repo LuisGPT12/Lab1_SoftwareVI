@@ -79,7 +79,7 @@ class MainActivity : AppCompatActivity(), DadoAnimListener {
 
         // Animación de aparición (0 → 150)
         val fadeIn = ValueAnimator.ofInt(0, 150)
-        fadeIn.duration = 600
+        fadeIn.duration = 700
         fadeIn.addUpdateListener {
             colorDrawable.alpha = it.animatedValue as Int
         }
@@ -90,7 +90,7 @@ class MainActivity : AppCompatActivity(), DadoAnimListener {
 
         // Animación de desaparición (150 → 0)
         val fadeOut = ValueAnimator.ofInt(150, 0)
-        fadeOut.duration = 600
+        fadeOut.duration = 700
         fadeOut.addUpdateListener {
             colorDrawable.alpha = it.animatedValue as Int
         }
