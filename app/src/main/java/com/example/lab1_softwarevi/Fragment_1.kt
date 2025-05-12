@@ -38,7 +38,6 @@ class Fragment_1 : Fragment() {
             listener = context
         }
     }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
@@ -50,11 +49,9 @@ class Fragment_1 : Fragment() {
         mostrarGif()
         return view
     }
-
+//funcion para mostrar el gif
     private fun mostrarGif() {
         listener?.onStarGame()
-
-
         val randomNum = (1..6).random()
         val gifId =
             resources.getIdentifier("dado$randomNum", "drawable", requireContext().packageName)
@@ -91,7 +88,7 @@ class Fragment_1 : Fragment() {
                 override fun onLoadCleared(placeholder: Drawable?) {}
             })
     }
-
+//funcion que lanza confeti
     private fun lanzarKonfetti() {
         konfettiView.visibility = View.VISIBLE
 
@@ -110,7 +107,6 @@ class Fragment_1 : Fragment() {
                 )
             )
         }
-
         konfettiView.postDelayed({
             konfettiView.visibility = View.GONE
         }, 3000)

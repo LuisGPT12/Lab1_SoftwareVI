@@ -48,23 +48,20 @@ class MainActivity : AppCompatActivity(), DadoAnimListener {
             }
         }
     }
-
-    /**
-     * esta funcion nos trollea el programa
-     */
+//desactiva el boton y inicia el sonido de giro
     override fun onStarGame() {
         onDesactivarBotton()
         sonidoGiro.start()
     }
-
+//desactiva el botton
     override fun onDesactivarBotton() {
         button.isEnabled = false
     }
-
+//metodo para activar el botton
     override fun onActivarBotton() {
         button.isEnabled = true
     }
-
+//funcion para reproducir el video
     override fun reproducirSonido(resultado: Int) {
         val sound = if (resultado == 6) sonidoVictoria else sonidoDerrota
         sound.setOnCompletionListener {
@@ -72,9 +69,8 @@ class MainActivity : AppCompatActivity(), DadoAnimListener {
             sound.setOnCompletionListener(null)
         }
         sound.start()
-
     }
-
+//funcion para parpadear el fondo
     override fun parpadearFondo(color: Int) {
         val background = findViewById<ImageView>(R.id.backgroundImage)
         val colorDrawable = ColorDrawable(color)
