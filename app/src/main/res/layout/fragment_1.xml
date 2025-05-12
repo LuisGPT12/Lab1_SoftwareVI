@@ -17,11 +17,12 @@
     <!-- Imagen GIF del dado -->
 
     <!-- Imagen del resultado numérico -->
+
     <ImageView
         android:id="@+id/gifImageView"
         android:layout_width="300dp"
         android:layout_height="300dp"
-        android:layout_marginTop="260dp"
+        android:layout_marginTop="36dp"
         android:scaleType="centerCrop"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"
@@ -36,6 +37,6 @@
         app:layout_constraintTop_toBottomOf="@id/gifImageView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp" />
+        android:layout_marginTop="1dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

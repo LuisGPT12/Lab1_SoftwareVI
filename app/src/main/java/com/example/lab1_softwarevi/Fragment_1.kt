@@ -18,10 +18,11 @@ import nl.dionsegijn.konfetti.xml.KonfettiView
 import java.util.concurrent.TimeUnit
 
 interface DadoAnimListener {
-    fun onDesactivar()
-    fun onActivar()
+    fun onActivarBotton()
+    fun onStarGame()
     fun parpadearFondo(color: Int)
     fun reproducirSonido(resultado: Int)
+    fun onDesactivarBotton()
 }
 
 class Fragment_1 : Fragment() {
@@ -51,17 +52,23 @@ class Fragment_1 : Fragment() {
     }
 
     private fun mostrarGif() {
-        listener?.onActivar()
+        listener?.onStarGame()
+
 
         val randomNum = (1..6).random()
-        val gifId = resources.getIdentifier("dado$randomNum", "drawable", requireContext().packageName)
-        val imgId = resources.getIdentifier("num$randomNum", "drawable", requireContext().packageName)
+        val gifId =
+            resources.getIdentifier("dado$randomNum", "drawable", requireContext().packageName)
+        val imgId =
+            resources.getIdentifier("num$randomNum", "drawable", requireContext().packageName)
 
         Glide.with(this)
             .asGif()
             .load(gifId)
             .into(object : CustomTarget<GifDrawable>() {
-                override fun onResourceReady(resource: GifDrawable, transition: Transition<in GifDrawable>?) {
+                override fun onResourceReady(
+                    resource: GifDrawable,
+                    transition: Transition<in GifDrawable>?
+                ) {
                     resource.setLoopCount(1)
                     dadoGif.setImageDrawable(resource)
                     resource.start()
@@ -72,18 +79,15 @@ class Fragment_1 : Fragment() {
                         imageResul.visibility = View.VISIBLE
 
                         // Efectos visuales y sonidos
-                        val color = if (randomNum == 6) Color.parseColor("#FFD700") else Color.GRAY
+                        val color = if (randomNum == 6) Color.parseColor("#FFD700") else Color.parseColor("#4C4F56")
                         listener?.parpadearFondo(color)
                         listener?.reproducirSonido(randomNum)
 
                         if (randomNum == 6) {
                             lanzarKonfetti()
                         }
-
-                        listener?.onDesactivar()
-                    }, 2000)
+                    }, 1000)
                 }
-
                 override fun onLoadCleared(placeholder: Drawable?) {}
             })
     }

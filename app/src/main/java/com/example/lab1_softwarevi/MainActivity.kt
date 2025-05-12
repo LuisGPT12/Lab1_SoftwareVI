@@ -1,6 +1,5 @@
 package com.example.lab1_softwarevi
 
-import android.animation.ArgbEvaluator
 import android.animation.ValueAnimator
 import android.graphics.drawable.ColorDrawable
 import android.media.MediaPlayer
@@ -50,21 +49,30 @@ class MainActivity : AppCompatActivity(), DadoAnimListener {
         }
     }
 
-    override fun onActivar() {
-        button.isEnabled = false
+    /**
+     * esta funcion nos trollea el programa
+     */
+    override fun onStarGame() {
+        onDesactivarBotton()
         sonidoGiro.start()
     }
 
-    override fun onDesactivar() {
+    override fun onDesactivarBotton() {
+        button.isEnabled = false
+    }
+
+    override fun onActivarBotton() {
         button.isEnabled = true
     }
 
     override fun reproducirSonido(resultado: Int) {
-        if (resultado == 6) {
-            sonidoVictoria.start()
-        } else {
-            sonidoDerrota.start()
+        val sound = if (resultado == 6) sonidoVictoria else sonidoDerrota
+        sound.setOnCompletionListener {
+            onActivarBotton()
+            sound.setOnCompletionListener(null)
         }
+        sound.start()
+
     }
 
     override fun parpadearFondo(color: Int) {
@@ -75,18 +83,18 @@ class MainActivity : AppCompatActivity(), DadoAnimListener {
 
         // Animación de aparición (0 → 150)
         val fadeIn = ValueAnimator.ofInt(0, 150)
-        fadeIn.duration = 500
+        fadeIn.duration = 600
         fadeIn.addUpdateListener {
             colorDrawable.alpha = it.animatedValue as Int
         }
 
         // Pausa (150 → 150, mantiene visible 1 segundo)
         val hold = ValueAnimator.ofInt(150, 150)
-        hold.duration = 1000
+        hold.duration = 2000
 
         // Animación de desaparición (150 → 0)
         val fadeOut = ValueAnimator.ofInt(150, 0)
-        fadeOut.duration = 500
+        fadeOut.duration = 600
         fadeOut.addUpdateListener {
             colorDrawable.alpha = it.animatedValue as Int
         }
