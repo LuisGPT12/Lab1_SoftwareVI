@@ -48,11 +48,7 @@ class MainActivity : AppCompatActivity(), DadoAnimListener {
             }
         }
     }
-//desactiva el boton y inicia el sonido de giro
-    override fun onStarGame() {
-        onDesactivarBotton()
-        sonidoGiro.start()
-    }
+
 //desactiva el botton
     override fun onDesactivarBotton() {
         button.isEnabled = false

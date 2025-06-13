@@ -19,10 +19,9 @@ import java.util.concurrent.TimeUnit
 
 interface DadoAnimListener {
     fun onActivarBotton()
-    fun onStarGame()
+    fun onDesactivarBotton()
     fun parpadearFondo(color: Int)
     fun reproducirSonido(resultado: Int)
-    fun onDesactivarBotton()
 }
 
 class Fragment_1 : Fragment() {
@@ -53,7 +52,7 @@ class Fragment_1 : Fragment() {
     }
 //funcion para mostrar el gif
     private fun mostrarGif() {
-        listener?.onStarGame()
+        listener?.onDesactivarBotton()
         val randomNum = (1..6).random()
         val gifId =
             resources.getIdentifier("dado$randomNum", "drawable", requireContext().packageName)

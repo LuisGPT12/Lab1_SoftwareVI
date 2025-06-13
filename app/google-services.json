@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "332575611489",
+    "project_id": "lab2ds6",
+    "storage_bucket": "lab2ds6.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:332575611489:android:1a983766f9d0e624166820",
+        "android_client_info": {
+          "package_name": "com.example.lab1_softwarevi"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCZLC-HVJdOOBH3RDereeD_KJy_QhFZOHM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
