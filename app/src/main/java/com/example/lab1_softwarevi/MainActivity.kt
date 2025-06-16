@@ -49,6 +49,13 @@ class MainActivity : AppCompatActivity(), DadoAnimListener {
         }
     }
 
+    fun navigateToMainScreen() {
+        // Reemplaza el fragmento de login por el principal
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, Fragment_1())
+            .commit()
+    }
+
 //desactiva el botton
     override fun onDesactivarBotton() {
         button.isEnabled = false
