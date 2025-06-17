@@ -6,8 +6,10 @@ import android.media.MediaPlayer
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageView
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import com.google.firebase.auth.FirebaseAuth
 
 /**
  * Justin Barrios, Cédula: 8-983-1021
@@ -17,7 +19,11 @@ import androidx.appcompat.widget.Toolbar
 
 class MainActivity : AppCompatActivity(), DadoAnimListener {
 
-    private lateinit var button: Button
+    private lateinit var auth: FirebaseAuth
+    private lateinit var firebaseManager: FirebaseManager
+
+    private lateinit var button1: Button
+    private lateinit var button2: Button
     private lateinit var backgroundImage: ImageView
 
     private lateinit var sonidoBoton: MediaPlayer
@@ -29,42 +35,71 @@ class MainActivity : AppCompatActivity(), DadoAnimListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_activity)
 
+        auth = FirebaseAuth.getInstance()
+
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
 
-        button = findViewById(R.id.button)
+        button1 = findViewById(R.id.button)
+        button2 = findViewById(R.id.btnLogout)
         backgroundImage = findViewById(R.id.backgroundImage)
+
+        if (auth.currentUser == null) {
+            showLogin()
+        } else {
+            showMainScreen()
+        }
 
         sonidoBoton = MediaPlayer.create(this, R.raw.boton)
         sonidoGiro = MediaPlayer.create(this, R.raw.giro)
         sonidoVictoria = MediaPlayer.create(this, R.raw.victory)
         sonidoDerrota = MediaPlayer.create(this, R.raw.derrota)
 
-        button.setOnClickListener {
+        button1.setOnClickListener {
             sonidoBoton.start()
             supportFragmentManager.beginTransaction().apply {
                 replace(R.id.fragment_container, Fragment_1())
                 commit()
             }
         }
+
+        button2.setOnClickListener {
+            firebaseManager.logout()
+            showLogin()
+        }
     }
 
-    fun navigateToMainScreen() {
-        // Reemplaza el fragmento de login por el principal
+    private fun showLogin() {
+        // Remplaza el fragmento de login sobre el ConstraintLayout raíz
         supportFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container, Fragment_1())
+            .replace(R.id.main, LoginFragment(), "LOGIN_FRAGMENT")
             .commit()
+        button1.visibility = View.GONE
+        backgroundImage.visibility = View.GONE
+        findViewById<Button>(R.id.btnLogout).visibility = View.GONE
     }
 
-//desactiva el botton
+    fun showMainScreen() {
+        val fragment = supportFragmentManager.findFragmentByTag("LOGIN_FRAGMENT")
+        if (fragment != null) {
+            supportFragmentManager.beginTransaction()
+                .remove(fragment)
+                .commit()
+        }
+        button1.visibility = View.VISIBLE
+        backgroundImage.visibility = View.VISIBLE
+        findViewById<Button>(R.id.btnLogout).visibility = View.VISIBLE
+    }
+
+    //desactiva el botton
     override fun onDesactivarBotton() {
-        button.isEnabled = false
+        button1.isEnabled = false
     }
-//metodo para activar el botton
+    //metodo para activar el botton
     override fun onActivarBotton() {
-        button.isEnabled = true
+        button1.isEnabled = true
     }
-//funcion para reproducir el video
+    //funcion para reproducir el video
     override fun reproducirSonido(resultado: Int) {
         val sound = if (resultado == 6) sonidoVictoria else sonidoDerrota
         sound.setOnCompletionListener {
@@ -73,7 +108,7 @@ class MainActivity : AppCompatActivity(), DadoAnimListener {
         }
         sound.start()
     }
-//funcion para parpadear el fondo
+    //funcion para parpadear el fondo
     override fun parpadearFondo(color: Int) {
         val background = findViewById<ImageView>(R.id.backgroundImage)
         val colorDrawable = ColorDrawable(color)
@@ -103,5 +138,4 @@ class MainActivity : AppCompatActivity(), DadoAnimListener {
         animatorSet.playSequentially(fadeIn, hold, fadeOut)
         animatorSet.start()
     }
-
 }
