@@ -36,6 +36,7 @@ class MainActivity : AppCompatActivity(), DadoAnimListener {
         setContentView(R.layout.main_activity)
 
         auth = FirebaseAuth.getInstance()
+        firebaseManager = FirebaseManager()
 
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
@@ -64,13 +65,13 @@ class MainActivity : AppCompatActivity(), DadoAnimListener {
         }
 
         button2.setOnClickListener {
-            firebaseManager.logout()
-            showLogin()
+            firebaseManager.logout {
+                showLogin()
+            }
         }
     }
 
     private fun showLogin() {
-        // Remplaza el fragmento de login sobre el ConstraintLayout raíz
         supportFragmentManager.beginTransaction()
             .replace(R.id.main, LoginFragment(), "LOGIN_FRAGMENT")
             .commit()

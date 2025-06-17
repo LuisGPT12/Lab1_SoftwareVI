@@ -23,7 +23,10 @@ class FirebaseManager {
     fun getCurrentUser() = auth.currentUser
 
     // Cerrar sesión
-    fun logout() = auth.signOut()
+    fun logout(callback: () -> Unit) {
+        auth.signOut()
+        callback()
+    }
 
     // Leer datos de Firestore
     fun getUserData(uid: String, callback: (Map<String, Any>?) -> Unit) {
