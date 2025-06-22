@@ -81,12 +81,13 @@ class Fragment_1 : Fragment() {
                         listener?.parpadearFondo(color)
                         listener?.reproducirSonido(randomNum)
                         cambiarImgResoult(randomNum)
-
+                        actualizarPuntos(randomNum) //linea nueva de la funcion para actualizar los puntos
                         if (randomNum == 6) {
                             lanzarKonfetti()
                         }
                     }, 1000)
                 }
+
                 override fun onLoadCleared(placeholder: Drawable?) {}
             })
     }
@@ -116,5 +117,19 @@ class Fragment_1 : Fragment() {
     private fun cambiarImgResoult(res: Int){
         imageresoult.visibility=View.VISIBLE
         if(res==6)imageresoult.setImageResource(R.drawable.victoria) else imageresoult.setImageResource(R.drawable.derrota)
+    }
+    private fun actualizarPuntos(resultado: Int) {
+        val mainActivity = activity as? MainActivity ?: return
+        val firebaseManager = mainActivity.firebaseManager
+        val user = mainActivity.auth.currentUser ?: return
+
+        firebaseManager.getUserPoints(user.uid) { docId, puntosActuales ->
+            if (docId != null && puntosActuales != null) {
+                val nuevosPuntos = if (resultado == 6) puntosActuales + 500 else puntosActuales - 100
+                firebaseManager.updateUserPoints(docId, nuevosPuntos) { exito ->
+                    // Puedes mostrar un toast o actualizar UI según exito si lo deseas
+                }
+            }
+        }
     }
 }

@@ -39,4 +39,32 @@ class FirebaseManager {
             }
     }
 
+    // Obtener los puntos actuales del usuario
+    fun getUserPoints(uid: String, callback: (String?, Long?) -> Unit) {
+        db.collection("registro_de_puntos")
+            .whereEqualTo("usuario_id", uid)
+            .limit(1)
+            .get()
+            .addOnSuccessListener { documents ->
+                if (!documents.isEmpty) {
+                    val doc = documents.documents[0]
+                    val puntos = doc.getLong("cantidad_puntos")
+                    callback(doc.id, puntos)
+                } else {
+                    callback(null, null)
+                }
+            }
+            .addOnFailureListener {
+                callback(null, null)
+            }
+    }
+
+    // Actualizar los puntos del usuario
+    fun updateUserPoints(docId: String, nuevosPuntos: Long, callback: (Boolean) -> Unit) {
+        db.collection("registro_de_puntos").document(docId)
+            .update("cantidad_puntos", nuevosPuntos)
+            .addOnSuccessListener { callback(true) }
+            .addOnFailureListener { callback(false) }
+    }
+
 }

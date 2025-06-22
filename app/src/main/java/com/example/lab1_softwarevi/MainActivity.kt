@@ -19,8 +19,8 @@ import com.google.firebase.auth.FirebaseAuth
 
 class MainActivity : AppCompatActivity(), DadoAnimListener {
 
-    private lateinit var auth: FirebaseAuth
-    private lateinit var firebaseManager: FirebaseManager
+    lateinit var auth: FirebaseAuth
+    lateinit var firebaseManager: FirebaseManager
 
     private lateinit var button1: Button
     private lateinit var button2: Button
