@@ -72,24 +72,28 @@ class MainActivity : AppCompatActivity(), DadoAnimListener {
     }
 
     private fun showLogin() {
+        findViewById<View>(R.id.login_container).visibility = View.VISIBLE
+        findViewById<View>(R.id.button).visibility = View.GONE
+        findViewById<View>(R.id.btnLogout).visibility = View.GONE
+        findViewById<View>(R.id.imageView).visibility = View.GONE
+        // Oculta otros views si los tienes
         supportFragmentManager.beginTransaction()
-            .replace(R.id.main, LoginFragment(), "LOGIN_FRAGMENT")
+            .replace(R.id.login_container, LoginFragment(), "LOGIN_FRAGMENT")
             .commit()
-        button1.visibility = View.GONE
-        backgroundImage.visibility = View.GONE
-        findViewById<Button>(R.id.btnLogout).visibility = View.GONE
     }
 
     fun showMainScreen() {
+        findViewById<View>(R.id.login_container).visibility = View.GONE
+        findViewById<View>(R.id.button).visibility = View.VISIBLE
+        findViewById<View>(R.id.btnLogout).visibility = View.VISIBLE
+        findViewById<View>(R.id.imageView).visibility = View.VISIBLE
+        // Muestra otros views si los tienes
         val fragment = supportFragmentManager.findFragmentByTag("LOGIN_FRAGMENT")
         if (fragment != null) {
             supportFragmentManager.beginTransaction()
                 .remove(fragment)
                 .commit()
         }
-        button1.visibility = View.VISIBLE
-        backgroundImage.visibility = View.VISIBLE
-        findViewById<Button>(R.id.btnLogout).visibility = View.VISIBLE
     }
 
     //desactiva el botton

@@ -36,7 +36,6 @@ class LoginFragment : Fragment() {
             } else {
                 firebaseManager.login(email, password) { success, error ->
                     if (success) {
-                        // Opcional: puedes cargar aquí datos del usuario desde Firestore si lo necesitas
                         (requireActivity() as MainActivity).showMainScreen()
                     } else {
                         tvError.text = "Error: ${error ?: "No se pudo iniciar sesión"}"
