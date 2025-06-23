@@ -19,24 +19,10 @@ class FirebaseManager {
             }
     }
 
-    // Obtener usuario actual
-    fun getCurrentUser() = auth.currentUser
-
     // Cerrar sesión
     fun logout(callback: () -> Unit) {
         auth.signOut()
         callback()
-    }
-
-    // Leer datos de Firestore
-    fun getUserData(uid: String, callback: (Map<String, Any>?) -> Unit) {
-        db.collection("usuarios").document(uid).get()
-            .addOnSuccessListener { document ->
-                callback(document.data)
-            }
-            .addOnFailureListener {
-                callback(null)
-            }
     }
 
     // Obtener los puntos actuales del usuario

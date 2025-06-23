@@ -36,10 +36,19 @@ class LoginFragment : Fragment() {
             } else {
                 firebaseManager.login(email, password) { success, error ->
                     if (success) {
-                        // Opcional: puedes cargar aquí datos del usuario desde Firestore si lo necesitas
                         (requireActivity() as MainActivity).showMainScreen()
                     } else {
-                        tvError.text = "Error: ${error ?: "No se pudo iniciar sesión"}"
+                        tvError.text = when {
+                            error?.contains("password is invalid", ignoreCase = true) == true ||
+                                    error?.contains("no user record", ignoreCase = true) == true ||
+                                    error?.contains("auth credential is incorrect", ignoreCase = true) == true -> {
+                                "Correo o contraseña incorrectos."
+                            }
+                            error?.contains("network error", ignoreCase = true) == true -> {
+                                "Error de red. Intenta de nuevo."
+                            }
+                            else -> "Error: ${error ?: "No se pudo iniciar sesión"}"
+                        }
                         tvError.visibility = View.VISIBLE
                     }
                 }
