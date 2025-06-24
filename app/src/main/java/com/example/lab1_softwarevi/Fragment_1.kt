@@ -6,6 +6,8 @@ import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.*
 import android.widget.ImageView
+import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.gif.GifDrawable
@@ -31,6 +33,7 @@ class Fragment_1 : Fragment() {
     private lateinit var konfettiView: KonfettiView
     private var listener: DadoAnimListener? = null
     private lateinit var imageresoult: ImageView
+    private lateinit var textpoint : TextView
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -46,18 +49,23 @@ class Fragment_1 : Fragment() {
         imageResul = view.findViewById(R.id.imageResul)
         konfettiView = view.findViewById(R.id.konfettiView)
         imageresoult= view.findViewById(R.id.imageView2)
-
+        textpoint= view.findViewById(R.id.textView)
+        actualizarframe()
         mostrarGif()
         return view
     }
 //funcion para mostrar el gif
-    private fun mostrarGif() {
+private fun mostrarGif() {
+    verificarPuntos { puedeJugar ->
+        if (!isAdded) return@verificarPuntos // El fragmento ya no está adjunto
+        if (!puedeJugar) {
+            Toast.makeText(activity, "No tienes puntos suficientes", Toast.LENGTH_SHORT).show()
+            return@verificarPuntos
+        }
         listener?.onDesactivarBotton()
         val randomNum = (1..6).random()
-        val gifId =
-            resources.getIdentifier("dado$randomNum", "drawable", requireContext().packageName)
-        val imgId =
-            resources.getIdentifier("num$randomNum", "drawable", requireContext().packageName)
+        val gifId = resources.getIdentifier("dado$randomNum", "drawable", requireContext().packageName)
+        val imgId = resources.getIdentifier("num$randomNum", "drawable", requireContext().packageName)
 
         Glide.with(this)
             .asGif()
@@ -67,21 +75,21 @@ class Fragment_1 : Fragment() {
                     resource: GifDrawable,
                     transition: Transition<in GifDrawable>?
                 ) {
+                    if (!isAdded) return
                     resource.setLoopCount(1)
                     dadoGif.setImageDrawable(resource)
                     resource.start()
 
                     dadoGif.postDelayed({
-                        // Mostrar imagen del resultado
+                        if (!isAdded) return@postDelayed
                         imageResul.setImageResource(imgId)
                         imageResul.visibility = View.VISIBLE
 
-                        // Efectos visuales y sonidos
                         val color = if (randomNum == 6) Color.parseColor("#FFD700") else Color.parseColor("#4C4F56")
                         listener?.parpadearFondo(color)
                         listener?.reproducirSonido(randomNum)
                         cambiarImgResoult(randomNum)
-                        actualizarPuntos(randomNum) //linea nueva de la funcion para actualizar los puntos
+                        actualizarPuntos(randomNum)
                         if (randomNum == 6) {
                             lanzarKonfetti()
                         }
@@ -91,6 +99,9 @@ class Fragment_1 : Fragment() {
                 override fun onLoadCleared(placeholder: Drawable?) {}
             })
     }
+}
+
+
 //funcion que lanza confeti
     private fun lanzarKonfetti() {
         konfettiView.visibility = View.VISIBLE
@@ -125,11 +136,46 @@ class Fragment_1 : Fragment() {
 
         firebaseManager.getUserPoints(user.uid) { docId, puntosActuales ->
             if (docId != null && puntosActuales != null) {
-                val nuevosPuntos = if (resultado == 6) puntosActuales + 500 else puntosActuales - 100
+
+                val nuevosPuntos =
+                    if (resultado == 6) puntosActuales + 500 else puntosActuales - 100
                 firebaseManager.updateUserPoints(docId, nuevosPuntos) { exito ->
-                    // Puedes mostrar un toast o actualizar UI según exito si lo deseas
+                    if (exito) {
+                        actualizarframe()
+                    }
                 }
             }
+
+        }}
+    fun actualizarframe(){
+        val mainActivity = activity as? MainActivity ?: return
+        val firebaseManager = mainActivity.firebaseManager
+        val user = mainActivity.auth.currentUser ?: return
+        firebaseManager.getUserPoints(user.uid) { _, puntosnew ->
+        if (puntosnew != null) {
+            firebaseManager.getUserData(user.uid) { data ->
+                val nombre = data?.get("nombre_completo") as? String ?: "???"
+                textpoint.text = "Usuario: $nombre - Puntos: $puntosnew"
+            }
+            }
+            }
+    }
+    fun verificarPuntos(callback: (Boolean) -> Unit) {
+        val mainActivity = activity as? MainActivity ?: return
+        val firebaseManager = mainActivity.firebaseManager
+        val user = mainActivity.auth.currentUser ?: return
+        firebaseManager.getUserPoints(user.uid) { _, puntosactuales ->
+            if (puntosactuales == null  ||  puntosactuales <=0) {
+                callback(false)
+            }else{
+                callback(true)
+            }
+    }
+}
+    fun limpiarPuntos() {
+        if (this::textpoint.isInitialized) {
+            textpoint.text = ""
         }
+
     }
 }

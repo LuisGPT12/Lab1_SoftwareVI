@@ -7,6 +7,8 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageView
 import android.view.View
+import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.google.firebase.auth.FirebaseAuth
@@ -21,7 +23,7 @@ class MainActivity : AppCompatActivity(), DadoAnimListener {
 
     lateinit var auth: FirebaseAuth
     lateinit var firebaseManager: FirebaseManager
-
+    private lateinit var fragment1: Fragment_1
     private lateinit var button1: Button
     private lateinit var button2: Button
     private lateinit var backgroundImage: ImageView
@@ -37,7 +39,7 @@ class MainActivity : AppCompatActivity(), DadoAnimListener {
 
         auth = FirebaseAuth.getInstance()
         firebaseManager = FirebaseManager()
-
+        fragment1 = Fragment_1()
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
 
@@ -59,11 +61,10 @@ class MainActivity : AppCompatActivity(), DadoAnimListener {
         button1.setOnClickListener {
             sonidoBoton.start()
             supportFragmentManager.beginTransaction().apply {
-                replace(R.id.fragment_container, Fragment_1())
+                replace(R.id.fragment_container,Fragment_1())
                 commit()
             }
         }
-
         button2.setOnClickListener {
             firebaseManager.logout {
                 showLogin()
@@ -72,6 +73,7 @@ class MainActivity : AppCompatActivity(), DadoAnimListener {
     }
 
     private fun showLogin() {
+        fragment1.limpiarPuntos()
         findViewById<View>(R.id.login_container).visibility = View.VISIBLE
         findViewById<View>(R.id.button).visibility = View.GONE
         findViewById<View>(R.id.btnLogout).visibility = View.GONE
@@ -81,7 +83,6 @@ class MainActivity : AppCompatActivity(), DadoAnimListener {
             .replace(R.id.login_container, LoginFragment(), "LOGIN_FRAGMENT")
             .commit()
     }
-
     fun showMainScreen() {
         findViewById<View>(R.id.login_container).visibility = View.GONE
         findViewById<View>(R.id.button).visibility = View.VISIBLE

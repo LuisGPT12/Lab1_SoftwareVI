@@ -44,6 +44,16 @@ class FirebaseManager {
                 callback(null, null)
             }
     }
+    // Leer datos de FirestoreAdd commentMore actions
+    fun getUserData(uid: String, callback: (Map<String, Any>?) -> Unit) {
+        db.collection("usuarios").document(uid).get()
+            .addOnSuccessListener { document ->
+                callback(document.data)
+            }
+            .addOnFailureListener {
+                callback(null)
+            }
+    }
 
     // Actualizar los puntos del usuario
     fun updateUserPoints(docId: String, nuevosPuntos: Long, callback: (Boolean) -> Unit) {

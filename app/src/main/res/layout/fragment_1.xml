@@ -21,6 +21,7 @@
 
     <ImageView
         android:id="@+id/gifImageView"
+        android:layout_marginEnd="65dp"
         android:layout_width="300dp"
         android:layout_height="300dp"
         android:layout_marginTop="212dp"
@@ -34,6 +35,7 @@
         android:id="@+id/imageResul"
         android:layout_width="250dp"
         android:layout_height="35dp"
+        android:layout_marginEnd="65dp"
         android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/gifImageView"
         app:layout_constraintEnd_toEndOf="parent"
@@ -44,6 +46,7 @@
         android:layout_width="300dp"
         android:layout_height="40dp"
         android:layout_marginBottom="40dp"
+        android:layout_marginEnd="65dp"
         android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/imageResul"
         app:layout_constraintEnd_toEndOf="parent"
@@ -51,5 +54,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintVertical_bias="0.0"
         tools:srcCompat="@tools:sample/backgrounds/scenic" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:textColor="#F8B607"
+        android:layout_marginEnd="65dp"
+        android:layout_marginBottom="100dp"
+        app:layout_constraintBottom_toTopOf="@+id/imageResul"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
