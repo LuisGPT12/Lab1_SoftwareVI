@@ -23,7 +23,6 @@ class MainActivity : AppCompatActivity(), DadoAnimListener {
 
     lateinit var auth: FirebaseAuth
     lateinit var firebaseManager: FirebaseManager
-    private lateinit var fragment1: Fragment_1
     private lateinit var button1: Button
     private lateinit var button2: Button
     private lateinit var backgroundImage: ImageView
@@ -36,10 +35,8 @@ class MainActivity : AppCompatActivity(), DadoAnimListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_activity)
-
         auth = FirebaseAuth.getInstance()
         firebaseManager = FirebaseManager()
-        fragment1 = Fragment_1()
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
 
@@ -52,7 +49,6 @@ class MainActivity : AppCompatActivity(), DadoAnimListener {
         } else {
             showMainScreen()
         }
-
         sonidoBoton = MediaPlayer.create(this, R.raw.boton)
         sonidoGiro = MediaPlayer.create(this, R.raw.giro)
         sonidoVictoria = MediaPlayer.create(this, R.raw.victory)
@@ -73,22 +69,25 @@ class MainActivity : AppCompatActivity(), DadoAnimListener {
     }
 
     private fun showLogin() {
-        fragment1.limpiarPuntos()
+        val fragment_actual = supportFragmentManager.findFragmentById(R.id.fragment_container)
+        if (fragment_actual is Fragment_1) {
+            fragment_actual.limpiarPuntos()
+        }
+        //ocultar elementos de la pantalla principal
         findViewById<View>(R.id.login_container).visibility = View.VISIBLE
         findViewById<View>(R.id.button).visibility = View.GONE
         findViewById<View>(R.id.btnLogout).visibility = View.GONE
         findViewById<View>(R.id.imageView).visibility = View.GONE
-        // Oculta otros views si los tienes
         supportFragmentManager.beginTransaction()
             .replace(R.id.login_container, LoginFragment(), "LOGIN_FRAGMENT")
             .commit()
     }
     fun showMainScreen() {
+        //vuelve visible los elementos de la pantalla principal
         findViewById<View>(R.id.login_container).visibility = View.GONE
         findViewById<View>(R.id.button).visibility = View.VISIBLE
         findViewById<View>(R.id.btnLogout).visibility = View.VISIBLE
         findViewById<View>(R.id.imageView).visibility = View.VISIBLE
-        // Muestra otros views si los tienes
         val fragment = supportFragmentManager.findFragmentByTag("LOGIN_FRAGMENT")
         if (fragment != null) {
             supportFragmentManager.beginTransaction()

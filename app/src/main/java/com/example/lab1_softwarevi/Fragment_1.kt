@@ -176,6 +176,5 @@ private fun mostrarGif() {
         if (this::textpoint.isInitialized) {
             textpoint.text = ""
         }
-
     }
 }
